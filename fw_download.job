@@ -1,0 +1,47 @@
+#!/bin/bash
+#
+#SBATCH -J fw_download
+#SBATCH --time=1:00:00
+#SBATCH -n 1
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=8G
+#SBATCH -p leanew1,normal  # Queue names you can submit to
+# Outputs ----------------------------------
+#SBATCH -o logs/fprep.%N.%j.out
+#SBATCH -e logs/fprep.%N.%j.err
+#SBATCH --mail-user=xuezhang@stanford.edu
+#SBATCH --mail-type=ALL
+#SBATCH --array=1
+# ------------------------------------------
+
+export PYTHONPATH=/home/users/xuezhang/.local/lib/python3.9/site-packages
+ml python/3.9.0 
+ml biology
+ml dcm2niix/1.0.20211006
+
+
+
+# NOTE: logs folder must exist!
+Project="p50"
+BIDS_DIR="${SCRATCH}/Projects/${Project}/data/bids-input"
+WORK_DIR="${L_SCRATCH}/${Project}/bids-input"
+mkdir -p ${BIDS_DIR}
+mkdir -p ${WORK_DIR}
+
+subject = $1
+
+# Compose the command line
+cmd="python3.9 ${PYTHONPATH}/bidsify/sync.py ${WORK_DIR} ${Project} --participant-label ${subject} --workdir ${WORK_DIR}/work; mv ${WORK_DIR}/* ${BIDS_DIR}"
+
+# Setup done, run the command
+echo Running task ${SLURM_ARRAY_TASK_ID}
+echo Commandline: $cmd
+eval $cmd
+exitcode=$?
+
+# Output results to a table
+echo "sub-$subject   ${SLURM_ARRAY_TASK_ID}    $exitcode" \
+      >> logs/${SLURM_JOB_NAME}.${SLURM_ARRAY_JOB_ID}.tsv
+echo Finished tasks ${SLURM_ARRAY_TASK_ID} with exit code $exitcode
+exit $exitcode
+
