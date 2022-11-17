@@ -14,7 +14,7 @@
 #SBATCH --array=1
 # ------------------------------------------
 
-export PYTHONPATH=/home/users/xuezhang/.local/lib/python3.9/site-packages
+export PYTHONPATH=~/.local/lib/python3.9/site-packages
 ml python/3.9.0 
 ml biology
 ml dcm2niix/1.0.20211006
