@@ -10,3 +10,4 @@ This repository includes templates that help you submit SLURM jobs to your HPC c
 
 - [*fMRIPrep*](https://fmriprep.org/en/stable)
 - [*MRIQC*](https://mriqc.readthedocs.io/en/stable/)
+- fw_download.job, a template file to submit a bidsification job on Sherlock for neuroimaging data on flywheel, needs to set up the [bidsfy](https://github.com/WilliamsPANLab/bidsify) first.
