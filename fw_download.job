@@ -28,7 +28,7 @@ WORK_DIR="${L_SCRATCH}/${Project}/bids-input"
 mkdir -p ${BIDS_DIR}
 mkdir -p ${WORK_DIR}
 
-#subject=$1
+subject=$1
 
 # Compose the command line
 cmd="python3.9 ${PYTHONPATH}/bidsify/sync.py ${WORK_DIR} ${Project} --participant-label ${subject} --workdir ${WORK_DIR}/work; mv ${WORK_DIR}/* ${BIDS_DIR}"
